@@ -1,0 +1,21 @@
+{
+  "name": "todo-simulacra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify index.js | uglifyjs -cm > dist/index.js",
+    "watch": "watchify index.js -o dist/index.js -v"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "simulacra": "0.0.6"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "uglify-js": "^2.6.1",
+    "watchify": "^3.6.1"
+  }
+}
