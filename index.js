@@ -1,7 +1,7 @@
 var bind = require('simulacra')
 
 var data = {
-  isEmpty: false,
+  empty: false,
   items: [
     "Water the plants",
     "Feed the dog",
@@ -15,7 +15,7 @@ var main = document.querySelector('main')
 
 var app = document.getElementById('app').content
 var bindings = bind(app, {
-  'isEmpty': bind(app.querySelector('p.empty'), mountEmpty),
+  'empty': bind(app.querySelector('p.empty'), mountEmpty),
   'items': bind(app.querySelector('li'), mountItem),
   'form': bind(app.querySelector('form'), {
     'disabled': bind(app.querySelector('button.add'), mountAddButton),
@@ -33,7 +33,7 @@ function mountItem(node, value, oldValue, index) {
       e.preventDefault()
       data.items.splice(index, 1)
       data.items = data.items
-      data.isEmpty = data.items.length < 1
+      data.empty = data.items.length < 1
     })
 }
 
@@ -50,7 +50,7 @@ main.querySelector('form')
     var todo = e.target.todo
     data.items = data.items.concat(todo.value)
     data.form.disabled = true
-    data.isEmpty = data.items.length < 1
+    data.empty = data.items.length < 1
     todo.value = ''
   })
 
