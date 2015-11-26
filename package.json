@@ -11,7 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "simulacra": "0.1.4"
+    "simulacra": "0.2.1"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
