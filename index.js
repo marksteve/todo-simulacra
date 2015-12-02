@@ -32,7 +32,6 @@ function mountItem(node, value, oldValue, index) {
     .addEventListener('click', function(e) {
       e.preventDefault()
       data.items.splice(index, 1)
-      data.items = data.items
       data.empty = data.items.length < 1
     })
 }
