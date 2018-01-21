@@ -1,87 +1,27 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Todo List</title>
-    <style>
-      body {
-        padding: 3rem;
-      }
-      body, input, button {
-        font: 20px/1.5 Myriad Pro, sans-serif;
-      }
-      button, input {
-        border-radius: 3px;
-        padding: 0.5em 1em;
-      }
-      button {
-        background: #eee;
-        border: 0;
-        font-size: 80%;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        cursor: pointer;
-      }
-      button:disabled {
-        color: inherit;
-        opacity: 0.5;
-      }
-      input {
-        border: 1px solid;
-      }
-      body {
-        display: flex;
-        justify-content: center;
-      }
-      main {
-        width: 40rem;
-      }
-      h1 {
-        font-weight: normal;
-      }
-      p.empty {
-        padding: 1rem;
-      }
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-      li {
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #eee;
-      }
-      li span {
-        flex: 1;
-      }
-      form {
-        display: flex;
-        padding: 1rem;
-      }
-      input[name=todo] {
-        flex: 1;
-      }
-      button.add {
-        margin-left: 1rem;
-      }
-    </style>
+    <link rel="stylesheet" href="/style.css">
   </head>
   <body>
     <template id="app">
-      <h1>Todo List</h1>
-      <p class="empty">Nothing to do!</p>
-      <ul>
-        <li>
-          <span></span>
-          <button type="button" class="done">done</button>
-        </li>
-      </ul>
-      <form>
-        <input type="text" name="todo">
-        <button type="submit" class="add">Add</button>
-      </form>
+      <div>
+        <h1>Todo List</h1>
+        <p class="empty"></p>
+        <ul>
+          <li class="items">
+            <span class="label"></span>
+            <button type="button" class="done">Done</button>
+          </li>
+        </ul>
+        <form>
+          <input type="text" name="todo">
+          <button type="submit" class="add">Add</button>
+        </form>
+      </div>
     </template>
-    <main></main>
     <script src="dist/index.js"></script>
   </body>
 </html>
