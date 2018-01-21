@@ -1,60 +1,78 @@
-var bind = require('simulacra')
+const bindObject = require("simulacra");
+const bindEvents = require("simulacra/helpers").bindEvents;
 
-var data = {
-  empty: false,
+const combine = fns => (node, value, previousValue, path) => {
+  let result = null;
+  fns.forEach(fn => result = fn(node, value, previousValue, path));
+  return result;
+};
+
+const findIndex = (list, prop, val) => {
+  let result = null;
+
+  for (let i = 0, t = list.length; i < t; i++) {
+    if (list[i][prop] === val) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+};
+
+const state = {
+  empty: undefined,
   items: [
-    "Water the plants",
-    "Feed the dog",
+    { id: 1, label: "Water the plants" },
+    { id: 2, label: "Feed the dog" },
   ],
   form: {
-    disabled: true,
+    text: "",
+    disabled: true
   },
-}
+};
 
-var main = document.querySelector('main')
+let nextId = state.items.length + 1;
 
-var app = document.getElementById('app').content
-var bindings = bind(app, {
-  'empty': bind(app.querySelector('p.empty'), mountEmpty),
-  'items': bind(app.querySelector('li'), mountItem),
-  'form': bind(app.querySelector('form'), {
-    'disabled': bind(app.querySelector('button.add'), mountAddButton),
-  }),
-})
+const template = document.getElementById("app");
 
-function mountEmpty(node, value) {
-  node.style.display = value ? 'block' : 'none'
-}
+const mappings = {
+  empty: ".empty",
+  items: [ ".items", {
+    label: ".label",
+    id: [ "button.done", bindEvents({
+      click: (el, path) => {
+        const index = findIndex(state.items, "id", path.target.id);
+        state.items.splice(index, 1);
+        if (state.items.length === 0) {
+          state.empty = "Nothing to do!";
+        }
+      }
+    }) ]
+  } ],
+  form: [ "form", {
+    text: [ "[name=todo]", combine([
+      bindEvents({
+        input: evt => {
+          state.form.disabled = evt.target.value.length < 1;
+        }
+      }),
+      (el, val) => val
+    ]) ],
+    disabled: [ "button.add", (el, val) => {
+      el.disabled = val;
+    } ]
+  }, bindEvents({
+    submit: evt => {
+      evt.preventDefault();
+      const todo = evt.target.todo.value;
+      state.items.push({ id: nextId++, label: todo });
+      state.form.disabled = true;
+      state.form.text = "";
+      state.empty = undefined;
+    }
+  }) ]
+};
 
-function mountItem(node, value, oldValue, index) {
-  node.querySelector('span').textContent = value
-  node.querySelector('button.done')
-    .addEventListener('click', function(e) {
-      e.preventDefault()
-      data.items.splice(index, 1)
-      data.empty = data.items.length < 1
-    })
-}
-
-function mountAddButton(node, value) {
-  node.disabled = value
-}
-
-var el = bind(data, bindings)
-main.appendChild(el)
-
-main.querySelector('form')
-  .addEventListener('submit', function(e) {
-    e.preventDefault()
-    var todo = e.target.todo
-    data.items = data.items.concat(todo.value)
-    data.form.disabled = true
-    data.empty = data.items.length < 1
-    todo.value = ''
-  })
-
-main.querySelector('input[name=todo]')
-  .addEventListener('input', function(e) {
-    data.form.disabled = e.target.value.length < 1
-  })
+const node = bindObject(state, [ template, mappings ]);
+document.body.appendChild(node);
 
